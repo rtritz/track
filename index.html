@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Park Tudor Track & Field</title>
+  <title>PT Track & Field</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -30,7 +30,7 @@
     /* HEADER */
     header {
       background-color: var(--navy);
-      padding: 18px 32px;
+      padding: 18px 24px;
       text-align: center;
       position: relative;
     }
@@ -45,24 +45,24 @@
 
     header h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(52px, 8vw, 76px);
-      letter-spacing: 0.12em;
+      font-size: clamp(32px, 7vw, 76px);
+      letter-spacing: 0.04em;
       color: var(--white);
-      line-height: 1;
-      white-space: nowrap;
+      line-height: 1.1;
       opacity: 0;
       animation: fadeUp 0.5s ease forwards 0.1s;
     }
 
     .header-values {
       font-family: 'DM Sans', sans-serif;
-      font-size: clamp(11px, 1.5vw, 13px);
+      font-size: clamp(10px, 2.5vw, 13px);
       font-weight: 400;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       color: rgba(255,255,255,0.6);
       margin-top: 8px;
       opacity: 0;
       animation: fadeUp 0.5s ease forwards 0.25s;
+      line-height: 1.6;
     }
 
     /* MAIN CONTENT */
@@ -219,6 +219,9 @@
       main { padding: 36px 16px 60px; }
       .card-body { padding: 20px; }
       .drive-frame { height: 240px; }
+      .val-sep { display: none; }
+      .header-values span { display: block; }
+      .header-values span:not(.val-sep) { margin-bottom: 2px; }
     }
   </style>
 </head>
@@ -226,7 +229,13 @@
 
   <header>
     <h1>Park Tudor Track &amp; Field</h1>
-    <p class="header-values">Be a great teammate. &nbsp;·&nbsp; Strive for excellence. &nbsp;·&nbsp; Act with character.</p>
+    <p class="header-values">
+      <span>Be a great teammate.</span>
+      <span class="val-sep"> &nbsp;·&nbsp; </span>
+      <span>Strive for excellence.</span>
+      <span class="val-sep"> &nbsp;·&nbsp; </span>
+      <span>Act with character.</span>
+    </p>
   </header>
 
   <main>
