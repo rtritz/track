@@ -335,56 +335,7 @@
       }, 1200);
     })();
 
-    // On mobile, the iframe captures touch events that should go to the page
-    // scroll compositor. Fix: overlay intercepts touches, distinguishes between
-    // scrolls (moving finger — block from iframe, let page scroll) and taps
-    // (stationary finger — pass through to iframe so file links work normally).
-    (function () {
-      var wrapper = document.querySelector('.drive-wrapper');
-      if (!wrapper) return;
-      if (!('ontouchstart' in window)) return;
 
-      var overlay = document.createElement('div');
-      overlay.style.cssText = [
-        'position:absolute',
-        'inset:0',
-        'z-index:10',
-        'background:transparent',
-        '-webkit-tap-highlight-color:transparent'
-      ].join(';');
-      wrapper.appendChild(overlay);
-
-      var startY = 0;
-      var startX = 0;
-      var isScrolling = false;
-      var SCROLL_THRESHOLD = 8; // px of movement before we call it a scroll
-
-      overlay.addEventListener('touchstart', function (e) {
-        startY = e.touches[0].clientY;
-        startX = e.touches[0].clientX;
-        isScrolling = false;
-        // Immediately pass touches through to iframe — if the finger moves
-        // enough to be a scroll, we restore pointer-events to block it.
-        overlay.style.pointerEvents = 'none';
-      }, { passive: true });
-
-      overlay.addEventListener('touchmove', function (e) {
-        var dy = Math.abs(e.touches[0].clientY - startY);
-        var dx = Math.abs(e.touches[0].clientX - startX);
-        if (dy > SCROLL_THRESHOLD || dx > SCROLL_THRESHOLD) {
-          isScrolling = true;
-          // It's a scroll — block the iframe from receiving further touches
-          overlay.style.pointerEvents = '';
-        }
-      }, { passive: true });
-
-      overlay.addEventListener('touchend', function (e) {
-        // After any gesture, restore overlay interception
-        setTimeout(function () {
-          overlay.style.pointerEvents = '';
-        }, 300);
-      }, { passive: true });
-    })();
   </script>
 
 </body>
