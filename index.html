@@ -286,7 +286,7 @@
         <span class="card-title">Documents</span>
       </div>
       <div class="card-body">
-        <div style="contain: strict; height: 400px; border-radius: 6px; overflow: hidden; will-change: transform;">
+        <div class="drive-wrapper" style="contain: strict; position: relative; height: 400px; border-radius: 6px; overflow: hidden; will-change: transform;">
           <iframe
             class="drive-frame"
             src="https://drive.google.com/embeddedfolderview?authuser=0&id=17KB069VaRQN1pIinZlS2f7CO1pPMWQjH#list"
@@ -335,44 +335,66 @@
       }, 1200);
     })();
 
-    // Freeze the Drive iframe after it loads by removing allow-scripts from its
-    // sandbox. This stops background JS (polling, re-renders, network calls) that
-    // compete with scroll on mobile. On user interaction, scripts are restored.
+    // On mobile, the iframe captures touch events that should go to the page
+    // scroll compositor. Fix: overlay intercepts touches, distinguishes between
+    // scrolls (moving finger — block from iframe, let page scroll) and taps
+    // (stationary finger — pass through to iframe so file links work normally).
     (function () {
-      var iframe = document.querySelector('.drive-frame');
-      if (!iframe) return;
+      var wrapper = document.querySelector('.drive-wrapper');
+      if (!wrapper) return;
+      if (!('ontouchstart' in window)) return;
 
-      var FULL_SANDBOX = 'allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads';
-      var FROZEN_SANDBOX = 'allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads';
-      var frozen = false;
-      var wrapper = iframe.parentNode;
+      var overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:absolute',
+        'inset:0',
+        'z-index:10',
+        'background:transparent',
+        '-webkit-tap-highlight-color:transparent'
+      ].join(';');
+      wrapper.appendChild(overlay);
 
-      function freeze() {
-        if (frozen) return;
-        frozen = true;
-        iframe.setAttribute('sandbox', FROZEN_SANDBOX);
-        var src = iframe.src;
-        iframe.src = '';
-        iframe.src = src;
-      }
+      var startY = 0;
+      var startX = 0;
+      var isScrolling = false;
+      var SCROLL_THRESHOLD = 8; // px of movement before we call it a scroll
 
-      function unfreeze() {
-        if (!frozen) return;
-        frozen = false;
-        iframe.setAttribute('sandbox', FULL_SANDBOX);
-        var src = iframe.src;
-        iframe.src = '';
-        iframe.src = src;
-      }
+      overlay.addEventListener('touchstart', function (e) {
+        startY = e.touches[0].clientY;
+        startX = e.touches[0].clientX;
+        isScrolling = false;
+      }, { passive: true });
 
-      // Freeze ~1s after load completes, giving the frame time to fully render.
-      iframe.addEventListener('load', function () {
-        setTimeout(freeze, 1000);
-      });
+      overlay.addEventListener('touchmove', function (e) {
+        var dy = Math.abs(e.touches[0].clientY - startY);
+        var dx = Math.abs(e.touches[0].clientX - startX);
+        if (dy > SCROLL_THRESHOLD || dx > SCROLL_THRESHOLD) {
+          isScrolling = true;
+        }
+      }, { passive: true });
 
-      // Unfreeze when the user taps the iframe wrapper so interaction works.
-      wrapper.addEventListener('click', unfreeze, { once: false });
-      wrapper.addEventListener('touchstart', unfreeze, { passive: true, once: false });
+      overlay.addEventListener('touchend', function (e) {
+        if (!isScrolling) {
+          // It's a tap — hide overlay momentarily so the tap hits the iframe
+          overlay.style.display = 'none';
+          // Re-dispatch the touch on the iframe
+          var iframe = wrapper.querySelector('.drive-frame');
+          var touch = e.changedTouches[0];
+          var rect = iframe.getBoundingClientRect();
+          // Use a tiny timeout so the display:none takes effect first
+          setTimeout(function () {
+            overlay.style.display = '';
+          }, 300);
+          // Simulate the click on the iframe at the touch point
+          var clickEvt = new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            clientX: touch.clientX,
+            clientY: touch.clientY
+          });
+          iframe.dispatchEvent(clickEvt);
+        }
+      }, { passive: true });
     })();
   </script>
 
