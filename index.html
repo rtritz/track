@@ -363,6 +363,9 @@
         startY = e.touches[0].clientY;
         startX = e.touches[0].clientX;
         isScrolling = false;
+        // Immediately pass touches through to iframe — if the finger moves
+        // enough to be a scroll, we restore pointer-events to block it.
+        overlay.style.pointerEvents = 'none';
       }, { passive: true });
 
       overlay.addEventListener('touchmove', function (e) {
@@ -370,30 +373,16 @@
         var dx = Math.abs(e.touches[0].clientX - startX);
         if (dy > SCROLL_THRESHOLD || dx > SCROLL_THRESHOLD) {
           isScrolling = true;
+          // It's a scroll — block the iframe from receiving further touches
+          overlay.style.pointerEvents = '';
         }
       }, { passive: true });
 
       overlay.addEventListener('touchend', function (e) {
-        if (!isScrolling) {
-          // It's a tap — hide overlay momentarily so the tap hits the iframe
-          overlay.style.display = 'none';
-          // Re-dispatch the touch on the iframe
-          var iframe = wrapper.querySelector('.drive-frame');
-          var touch = e.changedTouches[0];
-          var rect = iframe.getBoundingClientRect();
-          // Use a tiny timeout so the display:none takes effect first
-          setTimeout(function () {
-            overlay.style.display = '';
-          }, 300);
-          // Simulate the click on the iframe at the touch point
-          var clickEvt = new MouseEvent('click', {
-            bubbles: true,
-            cancelable: true,
-            clientX: touch.clientX,
-            clientY: touch.clientY
-          });
-          iframe.dispatchEvent(clickEvt);
-        }
+        // After any gesture, restore overlay interception
+        setTimeout(function () {
+          overlay.style.pointerEvents = '';
+        }, 300);
       }, { passive: true });
     })();
   </script>
