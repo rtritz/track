@@ -334,6 +334,46 @@
         animated.forEach(function (el) { el.style.willChange = 'auto'; });
       }, 1200);
     })();
+
+    // Freeze the Drive iframe after it loads by removing allow-scripts from its
+    // sandbox. This stops background JS (polling, re-renders, network calls) that
+    // compete with scroll on mobile. On user interaction, scripts are restored.
+    (function () {
+      var iframe = document.querySelector('.drive-frame');
+      if (!iframe) return;
+
+      var FULL_SANDBOX = 'allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads';
+      var FROZEN_SANDBOX = 'allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads';
+      var frozen = false;
+      var wrapper = iframe.parentNode;
+
+      function freeze() {
+        if (frozen) return;
+        frozen = true;
+        iframe.setAttribute('sandbox', FROZEN_SANDBOX);
+        var src = iframe.src;
+        iframe.src = '';
+        iframe.src = src;
+      }
+
+      function unfreeze() {
+        if (!frozen) return;
+        frozen = false;
+        iframe.setAttribute('sandbox', FULL_SANDBOX);
+        var src = iframe.src;
+        iframe.src = '';
+        iframe.src = src;
+      }
+
+      // Freeze ~1s after load completes, giving the frame time to fully render.
+      iframe.addEventListener('load', function () {
+        setTimeout(freeze, 1000);
+      });
+
+      // Unfreeze when the user taps the iframe wrapper so interaction works.
+      wrapper.addEventListener('click', unfreeze, { once: false });
+      wrapper.addEventListener('touchstart', unfreeze, { passive: true, once: false });
+    })();
   </script>
 
 </body>
