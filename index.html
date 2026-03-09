@@ -136,44 +136,102 @@
     }
 
     /* ── LINKS ── */
-    .links-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+.links-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
 
-    .link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--gold);
-      color: var(--white);
-      text-decoration: none;
-      padding: 13px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      letter-spacing: 0.02em;
-      /* Use transform for hover — compositor-only, no layout/paint */
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    }
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--navy);
+  transition: gap 0.2s ease;
+}
 
-    .link-btn:hover {
-      background: var(--gold-light);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(26,86,196,0.3);
-    }
+.link-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
 
-    .link-btn svg {
-      width: 15px; height: 15px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      flex-shrink: 0;
-    }
+.link-row:first-child {
+  padding-top: 0;
+}
+
+.link-row:hover {
+  gap: 20px;
+}
+
+.link-row:hover .link-icon-wrap {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.link-row:hover .link-icon-wrap svg {
+  stroke: var(--white);
+}
+
+.link-row:hover .link-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+.link-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+  background: #f8f8f8;
+}
+
+.link-icon-wrap svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--navy);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s;
+}
+
+.link-text {
+  flex: 1;
+}
+
+.link-label {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.link-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.link-arrow {
+  width: 16px;
+  height: 16px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: transform 0.2s ease, opacity 0.2s;
+}
 
     /* ── ABSENCE FORM ── */
     .absence-desc {
@@ -308,26 +366,53 @@
         <span class="card-icon">🔗</span>
         <span class="card-title">Links</span>
       </div>
-      <div class="card-body">
+<!-- Replace the entire Links card-body content: -->
+
+<div class="card-body">
   <ul class="links-list">
+
     <li>
-      <a class="link-btn" href="https://www.parktudor.org/athletics/teams-schedules/track-field" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" aria-hidden="true">...</svg>
-        Meet Schedule
+      <a class="link-row" href="https://www.parktudor.org/athletics/teams-schedules/track-field" target="_blank" rel="noopener noreferrer">
+        <span class="link-icon-wrap">
+          <!-- Calendar icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        <span class="link-text">
+          <span class="link-label">Meet Schedule</span>
+          <span class="link-sub">Park Tudor Athletics</span>
+        </span>
+        <svg class="link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </li>
+
     <li>
-      <a class="link-btn" href="https://www.athletic.net/team/17001/track-and-field-indoor/2026" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" aria-hidden="true">...</svg>
-        Meet Results
+      <a class="link-row" href="https://www.athletic.net/team/17001/track-and-field-indoor/2026" target="_blank" rel="noopener noreferrer">
+        <span class="link-icon-wrap">
+          <!-- Trophy icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M17 3H7l1 9a4 4 0 0 0 8 0l1-9z"/><path d="M7 3H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4M17 3h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg>
+        </span>
+        <span class="link-text">
+          <span class="link-label">Meet Results</span>
+          <span class="link-sub">Athletic.net · 2026 Season</span>
+        </span>
+        <svg class="link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </li>
+
     <li>
-      <a class="link-btn" href="https://www.tfrrs.org/lists/5491" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" aria-hidden="true">...</svg>
-        HSR Small School (1A-3A) Performance List
+      <a class="link-row" href="https://www.tfrrs.org/lists/5491" target="_blank" rel="noopener noreferrer">
+        <span class="link-icon-wrap">
+          <!-- Bar chart icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+        </span>
+        <span class="link-text">
+          <span class="link-label">Performance List</span>
+          <span class="link-sub">HSR Small School (1A–3A) · TFRRS</span>
+        </span>
+        <svg class="link-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </li>
+
   </ul>
 </div>
     </div>
@@ -352,6 +437,7 @@
 
 </body>
 </html>
+
 
 
 
