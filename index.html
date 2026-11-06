@@ -41,7 +41,7 @@
     /* ── HERO ── */
     header {
       position: relative;
-      padding: clamp(42px, 6vw, 66px) 24px;
+      padding: clamp(28px, 4vw, 38px) 24px;
       background: var(--brand);
       color: #fff;
     }
@@ -76,7 +76,7 @@
     .dashboard {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "absence" "documents" "links";
+      grid-template-areas: "documents" "links";
       gap: 18px;
     }
 
@@ -89,8 +89,6 @@
       background: var(--surface);
       box-shadow: 0 3px 16px rgba(24, 32, 38, 0.045);
     }
-
-    .absence-card { grid-area: absence; }
 
     .links-card { grid-area: links; }
     .documents-card { grid-area: documents; }
@@ -116,41 +114,46 @@
 
     .card-body { padding: 0; }
 
-    /* ── ABSENCE FORM ── */
-    .btn-absence {
-      display: inline-flex;
-      min-height: 50px;
+    /* ── PRIMARY ACTION ── */
+    .absence-cta {
+      display: flex;
+      width: fit-content;
+      min-height: 48px;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px 20px;
-      border: 1px solid var(--brand);
-      border-radius: 7px;
-      background: var(--brand);
-      color: #fff;
+      gap: 11px;
+      margin: 0 auto 18px;
+      padding: 10px 15px;
+      border: 1px solid #d5d9dc;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
       font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.035em;
-      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       text-decoration: none;
-      transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+      transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
     }
 
-    .btn-absence:hover {
-      transform: translateY(-2px);
-      background: var(--brand-deep);
-      box-shadow: 0 8px 18px rgba(149, 39, 26, 0.22);
+    .absence-cta:hover {
+      border-color: rgba(198, 53, 39, 0.45);
+      background: #fffafa;
+      color: var(--brand-deep);
     }
 
-    .btn-absence svg {
-      width: 17px;
-      height: 17px;
+    .absence-cta svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
+
+    .absence-cta > svg { stroke: var(--brand); }
+
+    .absence-cta .cta-arrow { width: 15px; height: 15px; margin-left: 3px; }
 
     /* ── LINKS ── */
     .links-list {
@@ -261,11 +264,11 @@
     }
 
     @media (max-width: 760px) {
-      header { padding: 42px 20px; }
+      header { padding: 28px 20px; }
       main { padding: 22px 16px 44px; }
       .dashboard {
         grid-template-columns: minmax(0, 1fr);
-        grid-template-areas: "absence" "documents" "links";
+        grid-template-areas: "documents" "links";
         gap: 16px;
       }
       .card { padding: 20px; border-radius: 10px; }
@@ -279,7 +282,7 @@
     @media (max-width: 420px) {
       .card { padding: 18px; }
       .link-row { gap: 9px; padding: 11px 2px; }
-      .btn-absence { width: 100%; }
+      .absence-cta { margin-bottom: 16px; }
       .drive-wrapper { height: 360px; }
     }
 
@@ -300,22 +303,13 @@
   </header>
 
   <main>
-    <div class="dashboard">
+    <a class="absence-cta" href="https://tally.so/r/w8YArP" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Submit Absence Form
+      <svg class="cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
 
-    <!-- ABSENCE FORM -->
-    <section class="card absence-card" aria-labelledby="absence-title">
-      <div class="card-heading">
-        <div>
-          <h2 class="card-title" id="absence-title">Absence Form</h2>
-        </div>
-      </div>
-      <div class="card-body">
-        <a class="btn-absence" href="https://tally.so/r/w8YArP" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          Submit Absence Form
-        </a>
-      </div>
-    </section>
+    <div class="dashboard">
 
     <!-- DOCUMENTS / GOOGLE DRIVE -->
     <section class="card documents-card" aria-labelledby="documents-title">
