@@ -165,19 +165,22 @@
 
     .link-row {
       display: grid;
-      min-height: 78px;
+      min-height: 48px;
       grid-template-columns: 30px minmax(0, 1fr) 16px;
       align-items: center;
-      gap: 10px;
-      padding: 12px 4px;
-      border-bottom: 1px solid var(--border);
+      gap: 11px;
+      padding: 10px 15px;
+      border: 1px solid #d5d9dc;
+      border-radius: 6px;
+      background: #fff;
       color: var(--ink);
       text-decoration: none;
-      transition: color 160ms ease, background 160ms ease;
+      transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
     }
 
     .link-row:hover {
-      background: #fbf8f7;
+      border-color: rgba(198, 53, 39, 0.45);
+      background: #fffafa;
       color: var(--brand-deep);
     }
 
@@ -281,7 +284,7 @@
 
     @media (max-width: 420px) {
       .card { padding: 18px; }
-      .link-row { gap: 9px; padding: 11px 2px; }
+      .link-row { gap: 9px; padding: 10px 12px; }
       .absence-cta { margin-bottom: 16px; }
       .drive-wrapper { height: 360px; }
     }
